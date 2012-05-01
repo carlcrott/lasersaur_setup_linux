@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Install with ./lasersaur_setup_linux
+
+# You might need to:
+# chmod 755 lasersaur_setup_linux
+# to make executeable
+
+#
+# Author: Carl Crott <carlcrott@gmail.com>
+# Licence: MIT
+# Ubuntu "from-scratch" setup for Arduino + Lasersaur
+
+# Automated linux installer for:
+#http://labs.nortd.com/lasersaur/manual/software_setup#dev
+
+# Change this to your default directory
+PROJECT_DIR="~/python_projects/lasersaur"
+
+if [[ $MACHTYPE = *linux* ]] ;then
+  echo "## Configuring for Linux System ##"
+
+  if which python2.7 ;then #if [ "`python2.6 -V 2>&1`" == "Python 2.7" ] ;then
+    echo "Installing LasaurGrbl"
+    cd $PROJECT_DIR 
+    wget https://github.com/stefanix/LasaurGrbl/zipball/master
+    unzip master && rm master #del the zips ... they're on github
+    cd stefanix-LasaurGrbl*
+
+    read -p "Plug your Arduino in now ... [Enter] when ready"
+
+#    Build this out later
+#    python2.7 flash.py
+
+    echo "Installing LasaurApp"
+    wget https://github.com/stefanix/LasaurApp/zipball/master
+    unzip master && rm master #del the zips ... they're on github
+    cd stefanix-LasaurApp*
+
+    easy_install pyserial
+    python backend/app.py
+
+#    sensible-browser http://localhost:4444/
+
+
+  else
+    echo "Unable to locate python2.7"
+  fi
+
+else
+  echo "This installer will only work on linux! =["
+fi
